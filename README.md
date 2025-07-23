@@ -44,7 +44,7 @@ sudo apt install python3 python3-venv python3-pip -y
    python app.py
    ```
 
-Aplikasi akan berjalan dan dapat diakses melalui [http://localhost:5000](http://localhost:5000) di browser.
+Aplikasi akan berjalan dan dapat diakses melalui (http://localhost:5000) di browser.
 
 ## Penggunaan
 
@@ -62,9 +62,9 @@ Silakan sesuaikan `app.py` untuk menambahkan rute atau logika tambahan.
 
 ---
 
-## Menjalankan Otomatis Setelah Reboot (Linux / EC2)
+## Menjalankan Otomatis Setelah Reboot (Ubuntu / EC2)
 
-### Metode 1: Menggunakan `systemd` (Direkomendasikan)
+### Metode 1: Menggunakan `systemd`
 
 1. Buat file konfigurasi service:
 
@@ -160,26 +160,30 @@ Silakan sesuaikan `app.py` untuk menambahkan rute atau logika tambahan.
    http://<alamat-IP-server>:5000
    ```
 
-   Cek log jika perlu:
-
-   ```bash
-   cat /home/ubuntu/flask-minimal/log.txt
-   ```
-
 ---
 
 ## Catatan Tambahan untuk Pengguna AWS EC2
 
-* Pastikan `app.py` menggunakan:
+* Buka port 5000
+  ### Langkah-langkah membuka port 5000 di AWS EC2:
 
-  ```python
-  app.run(host="0.0.0.0", port=5000)
+  1. Masuk ke AWS Console dan buka menu **EC2**.
+  2. Klik tab **Instance**, lalu pilih instance yang Anda gunakan.
+  3. Scroll ke bawah hingga menemukan bagian **Keamanan** (Security).
+  4. Klik tautan pada **Grup keamanan** (Security groups).
+  5. Setelah halaman grup keamanan terbuka, pilih tab **Aturan masuk** (Inbound rules).
+  6. Klik tombol **Edit aturan masuk**.
+  7. Klik **Tambahkan aturan** dan isi sebagai berikut:
+     * **Jenis** (Type): `Custom TCP`
+     * **Rentang port** (Port range): `5000`
+     * **Sumber** (Source): `0.0.0.0/0`
+  8. Klik tombol **Simpan aturan**.
+
+  Sekarang port 5000 telah terbuka dan aplikasi Flask Anda bisa diakses secara publik melalui:
+
   ```
-* Buka port 5000 di pengaturan **Security Group EC2** (Inbound Rules):
-
-  * Type: Custom TCP
-  * Port range: 5000
-  * Source: 0.0.0.0/0 (atau IP Anda sendiri untuk keamanan)
+  http://<alamat-IP-publik-EC2>:5000
+  ```
 
 ---
 
