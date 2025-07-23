@@ -164,7 +164,7 @@ Silakan sesuaikan `app.py` untuk menambahkan rute atau logika tambahan.
 
 ## Catatan Tambahan untuk Pengguna AWS EC2
 
-* Buka port 5000
+* Sebelum mengakses web pastikan port 5000 terbuka
   ### Langkah-langkah membuka port 5000 di AWS EC2:
 
   1. Masuk ke AWS Console dan buka menu **EC2**.
@@ -177,7 +177,7 @@ Silakan sesuaikan `app.py` untuk menambahkan rute atau logika tambahan.
      * **Jenis** (Type): `Custom TCP`
      * **Rentang port** (Port range): `5000`
      * **Sumber** (Source): `0.0.0.0/0`
-  8. Klik tombol **Simpan aturan**.
+   8. Klik tombol **Simpan aturan**.
 
   Sekarang port 5000 telah terbuka dan aplikasi Flask Anda bisa diakses secara publik melalui:
 
