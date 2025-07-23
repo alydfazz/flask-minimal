@@ -1,63 +1,194 @@
 # flask-minimal
 
-A minimal Flask starter project designed to help you quickly set up a clean, simple, and efficient web application. This project is structured to keep things lightweight and focuses on productivity, with all your code contained in a single file (`app.py`), along with basic templates and static assets.
+Proyek starter Flask minimalis ini dirancang untuk membantu Anda dengan cepat menyiapkan aplikasi web yang bersih, sederhana, dan efisien. Semua kode utama berada di satu file (`app.py`) dengan dukungan template dan aset statis dasar.
 
+## Fitur
 
-## Features
-- Single-file Flask application (`app.py`) to maximize productivity and simplicity.
-- Basic HTML template structure with minimal styling and JavaScript.
-- Simple and intuitive project setup with no unnecessary complexity.
-- Easily customizable for rapid development of web applications.
+* Aplikasi Flask hanya dalam satu file (`app.py`) untuk kesederhanaan dan efisiensi.
+* Struktur HTML dasar dengan sedikit styling dan JavaScript.
+* Penyiapan proyek yang intuitif dan tidak kompleks.
+* Mudah disesuaikan untuk pengembangan cepat.
 
-## Preparation
+## Persiapan Awal
+
 ```bash
 sudo apt update
 sudo apt install python3 python3-venv python3-pip -y
 ```
 
-## Installation
+## Instalasi
 
-1. Clone the repository:
+1. Clone repositori:
+
    ```bash
    git clone https://github.com/yourusername/flask-minimal.git
    cd flask-minimal
    ```
 
-2. Create a virtual environment (recommended):
+2. Buat virtual environment:
+
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. Install the required dependencies:
+3. Install dependensi:
+
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Run the app:
+4. Jalankan aplikasi:
+
    ```bash
    python app.py
    ```
 
-The Flask app will start, and you can view it by navigating to http://localhost:5000 in your browser.
+Aplikasi akan berjalan dan dapat diakses melalui [http://localhost:5000](http://localhost:5000) di browser.
 
-## Usage
+## Penggunaan
 
-This starter project is ready to be used as a foundation for building web applications. The app.py file contains all the Flask routes and logic, making it simple to expand and customize. You can add more templates, routes, or static files as needed.
+Proyek ini siap digunakan sebagai fondasi untuk membangun aplikasi web. Semua rute dan logika berada dalam `app.py`, sehingga mudah untuk dikembangkan. Anda dapat menambahkan template, rute, atau file statis sesuai kebutuhan.
 
-## Customization
-You can easily modify:
+## Kustomisasi
 
- - The HTML structure in `templates/index.html`
- - The styling in `static/style.css`
- - The interactivity in `static/script.js`
+Anda dapat memodifikasi:
 
-Feel free to update the app.py file to add your routes or any additional logic to fit your needs.
+* Struktur HTML di `templates/index.html`
+* Gaya tampilan di `static/style.css`
+* Interaktivitas di `static/script.js`
 
-## License
-This project is licensed under the MIT License.
+Silakan sesuaikan `app.py` untuk menambahkan rute atau logika tambahan.
 
-## Contributing
-Feel free to fork this repository and create pull requests if you have improvements or bug fixes. If you have any suggestions, open an issue, and we’ll discuss it!
+---
 
-This project is built with simplicity and efficiency in mind, perfect for quickly starting small web apps or prototypes with minimal overhead.
+## Menjalankan Otomatis Setelah Reboot (Linux / EC2)
+
+### Metode 1: Menggunakan `systemd` (Direkomendasikan)
+
+1. Buat file konfigurasi service:
+
+   ```bash
+   sudo nano /etc/systemd/system/flask-minimal.service
+   ```
+
+2. Masukkan konfigurasi berikut:
+
+   ```ini
+   [Unit]
+   Description=Flask Minimal Web App
+   After=network.target
+
+   [Service]
+   User=ubuntu
+   WorkingDirectory=/home/ubuntu/flask-minimal
+   ExecStart=/home/ubuntu/flask-minimal/venv/bin/python app.py
+   Restart=always
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+   **Penjelasan baris per baris:**
+
+   * `Description`: Deskripsi singkat service.
+   * `After=network.target`: Menunggu jaringan aktif sebelum menjalankan.
+   * `User`: Nama pengguna Linux yang menjalankan service.
+   * `WorkingDirectory`: Lokasi folder proyek.
+   * `ExecStart`: Jalur ke Python dalam virtual environment dan file Flask (`app.py`).
+   * `Restart=always`: Restart otomatis jika service berhenti.
+   * `WantedBy=multi-user.target`: Aktif saat sistem masuk ke mode normal (bukan recovery).
+
+3. Simpan dan keluar (Ctrl + X → Y → Enter)
+
+4. Aktifkan dan jalankan service:
+
+   ```bash
+   sudo systemctl daemon-reexec
+   sudo systemctl daemon-reload
+   sudo systemctl enable flask-minimal.service
+   sudo systemctl start flask-minimal.service
+   ```
+
+5. Cek status service:
+
+   ```bash
+   sudo systemctl status flask-minimal.service
+   ```
+
+6. Reboot server dan akses aplikasi:
+
+   ```bash
+   sudo reboot
+   ```
+
+   Lalu buka browser: `http://<alamat-IP-server>:5000`
+
+---
+
+### Metode 2: Menggunakan `crontab` (Alternatif lebih sederhana)
+
+1. Edit crontab pengguna:
+
+   ```bash
+   crontab -e
+   ```
+
+2. Tambahkan baris berikut di bagian bawah:
+
+   ```bash
+   @reboot /home/ubuntu/flask-minimal/venv/bin/python /home/ubuntu/flask-minimal/app.py >> /home/ubuntu/flask-minimal/log.txt 2>&1
+   ```
+
+   **Penjelasan:**
+
+   * `@reboot`: Jalankan saat sistem selesai reboot.
+   * Path lengkap: Pastikan jalur ke Python dan `app.py` sesuai.
+   * `>> log.txt 2>&1`: Simpan semua output (termasuk error) ke file `log.txt`.
+
+3. Simpan dan keluar (Ctrl + X → Y → Enter)
+
+4. Reboot server dan uji:
+
+   ```bash
+   sudo reboot
+   ```
+
+5. Setelah server menyala, akses:
+
+   ```
+   http://<alamat-IP-server>:5000
+   ```
+
+   Cek log jika perlu:
+
+   ```bash
+   cat /home/ubuntu/flask-minimal/log.txt
+   ```
+
+---
+
+## Catatan Tambahan untuk Pengguna AWS EC2
+
+* Pastikan `app.py` menggunakan:
+
+  ```python
+  app.run(host="0.0.0.0", port=5000)
+  ```
+* Buka port 5000 di pengaturan **Security Group EC2** (Inbound Rules):
+
+  * Type: Custom TCP
+  * Port range: 5000
+  * Source: 0.0.0.0/0 (atau IP Anda sendiri untuk keamanan)
+
+---
+
+## Lisensi
+
+Proyek ini menggunakan lisensi MIT.
+
+## Kontribusi
+
+Fork repositori ini, lalu kirim pull request untuk perbaikan atau pengembangan. Silakan buka issue jika memiliki saran atau pertanyaan.
+
+Proyek ini dirancang untuk kesederhanaan dan efisiensi, ideal untuk belajar Flask atau membangun prototipe aplikasi web ringan.
