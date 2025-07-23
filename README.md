@@ -44,7 +44,7 @@ sudo apt install python3 python3-venv python3-pip -y
    python app.py
    ```
 
-Aplikasi akan berjalan dan dapat diakses melalui (http://localhost:5000) di browser.
+Aplikasi akan berjalan dan dapat diakses melalui [http://localhost:5000] di browser.
 
 ## Penggunaan
 
