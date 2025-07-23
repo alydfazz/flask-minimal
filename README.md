@@ -164,19 +164,18 @@ Silakan sesuaikan `app.py` untuk menambahkan rute atau logika tambahan.
 
 ## Catatan Tambahan untuk Pengguna AWS EC2
 
-* Sebelum mengakses web pastikan port 5000 terbuka
-  ### Langkah-langkah membuka port 5000 di AWS EC2:
-
-  1. Masuk ke AWS Console dan buka menu **EC2**.
-  2. Klik tab **Instance**, lalu pilih instance yang Anda gunakan.
-  3. Scroll ke bawah hingga menemukan bagian **Keamanan** (Security).
-  4. Klik tautan pada **Grup keamanan** (Security groups).
-  5. Setelah halaman grup keamanan terbuka, pilih tab **Aturan masuk** (Inbound rules).
-  6. Klik tombol **Edit aturan masuk**.
-  7. Klik **Tambahkan aturan** dan isi sebagai berikut:
-     * **Jenis** (Type): `Custom TCP`
-     * **Rentang port** (Port range): `5000`
-     * **Sumber** (Source): `0.0.0.0/0`
+Sebelum mengakses web pastikan port 5000 terbuka
+### Langkah-langkah membuka port 5000 di AWS EC2:
+   1. Masuk ke AWS Console dan buka menu **EC2**.
+   2. Klik tab **Instance**, lalu pilih instance yang Anda gunakan.
+   3. Scroll ke bawah hingga menemukan bagian **Keamanan** (Security).
+   4. Klik tautan pada **Grup keamanan** (Security groups).
+   5. Setelah halaman grup keamanan terbuka, pilih tab **Aturan masuk** (Inbound rules).
+   6. Klik tombol **Edit aturan masuk**.
+   7. Klik **Tambahkan aturan** dan isi sebagai berikut:
+      * **Jenis** (Type): `Custom TCP`
+      * **Rentang port** (Port range): `5000`
+      * **Sumber** (Source): `0.0.0.0/0`
    8. Klik tombol **Simpan aturan**.
 
   Sekarang port 5000 telah terbuka dan aplikasi Flask Anda bisa diakses secara publik melalui:
